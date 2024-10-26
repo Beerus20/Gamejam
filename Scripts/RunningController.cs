@@ -22,6 +22,8 @@ public class RunningController : MonoBehaviour
     // DATA BASIC
     private Animator                    animator;
     public float                        walkspeed = 5f;
+    public float                        baseSpeed = 2.0f;
+    public float                        runMultiplier = 2.0f;
     
     // HASH STATE
     private int                         WalkingHash;
@@ -55,23 +57,43 @@ public class RunningController : MonoBehaviour
         bool    isRunning = animator.GetBool(RunningHash);
 
         if (left)
-            transform.Rotate(Vector3.up * -1 * rotspeed * Time.deltaTime);
-        if (right)
-            transform.Rotate(Vector3.up * 1 * rotspeed * Time.deltaTime);
-        if (!isWalkingBack && down)
-            move.Run("isWalkingBack", true);
-        if (isWalkingBack && !down)
-            move.Run("isWalkingBack", false);
-        if (!isWalking && up)
-            move.Run("isWalking", true);
-        if (up)
-            transform.Translate(0, 0, 2.0f * Time.deltaTime);
-        if (isWalking && !up)
-            move.Run("isWalking", false);
-        if (!isRunning && (up && shift))
-            move.Run("isRunning", true);
-        if (isRunning && (!up || ! shift))
-            move.Run("isRunning", false);
+        transform.Rotate(Vector3.up * -1 * rotspeed * Time.deltaTime);
+    if (right)
+        transform.Rotate(Vector3.up * 1 * rotspeed * Time.deltaTime);
+
+    // Walking Back
+    if (!isWalkingBack && down)
+        move.Run("isWalkingBack", true);
+    if (isWalkingBack && !down)
+        move.Run("isWalkingBack", false);
+    if (down)
+    {
+        float currentSpeed = isRunning ? baseSpeed * runMultiplier : baseSpeed; // Determine current speed
+        transform.Translate(0, 0, -currentSpeed * Time.deltaTime);
+    }
+
+    // Walking Forward
+    if (!isWalking && up)
+        move.Run("isWalking", true);
+    if (up)
+    {
+        float currentSpeed = isRunning ? baseSpeed * runMultiplier : baseSpeed; // Determine current speed
+        transform.Translate(0, 0, currentSpeed * Time.deltaTime);
+    }
+    if (isWalking && !up)
+        move.Run("isWalking", false);
+
+    // Running Logic
+    if (!isRunning && (up && Input.GetKey(KeyCode.LeftShift)))
+    {
+        isRunning = true; // Set running state
+        move.Run("isRunning", true);
+    }
+    if (isRunning && (!up || !Input.GetKey(KeyCode.LeftShift)))
+    {
+        isRunning = false; // Reset running state
+        move.Run("isRunning", false);
+    }
     }
 
     // velocity += Time.deltaTime * acceleration;
