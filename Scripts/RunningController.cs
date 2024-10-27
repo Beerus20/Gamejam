@@ -57,52 +57,42 @@ public class RunningController : MonoBehaviour
         bool    isRunning = animator.GetBool(RunningHash);
 
         if (left)
-        transform.Rotate(Vector3.up * -1 * rotspeed * Time.deltaTime);
-    if (right)
-        transform.Rotate(Vector3.up * 1 * rotspeed * Time.deltaTime);
+            transform.Rotate(Vector3.up * -1 * rotspeed * Time.deltaTime);
+        if (right)
+            transform.Rotate(Vector3.up * 1 * rotspeed * Time.deltaTime);
 
-    // Walking Back
-    if (!isWalkingBack && down)
-        move.Run("isWalkingBack", true);
-    if (isWalkingBack && !down)
-        move.Run("isWalkingBack", false);
-    if (down)
-    {
-        float currentSpeed = isRunning ? baseSpeed * runMultiplier : baseSpeed; // Determine current speed
-        transform.Translate(0, 0, -currentSpeed * Time.deltaTime);
-    }
+        // Walking Back
+        if (!isWalkingBack && down)
+            move.Run("isWalkingBack", true);
+        if (isWalkingBack && !down)
+            move.Run("isWalkingBack", false);
+        if (down)
+        {
+            float currentSpeed = isRunning ? baseSpeed * runMultiplier : baseSpeed; // Determine current speed
+            transform.Translate(0, 0, -currentSpeed * Time.deltaTime);
+        }
 
-    // Walking Forward
-    if (!isWalking && up)
-        move.Run("isWalking", true);
-    if (up)
-    {
-        float currentSpeed = isRunning ? baseSpeed * runMultiplier : baseSpeed; // Determine current speed
-        transform.Translate(0, 0, currentSpeed * Time.deltaTime);
-    }
-    if (isWalking && !up)
-        move.Run("isWalking", false);
+        // Walking Forward
+        if (!isWalking && up)
+            move.Run("isWalking", true);
+        if (up)
+        {
+            float currentSpeed = isRunning ? baseSpeed * runMultiplier : baseSpeed; // Determine current speed
+            transform.Translate(0, 0, currentSpeed * Time.deltaTime);
+        }
+        if (isWalking && !up)
+            move.Run("isWalking", false);
 
-    // Running Logic
-    if (!isRunning && (up && Input.GetKey(KeyCode.LeftShift)))
-    {
-        isRunning = true; // Set running state
-        move.Run("isRunning", true);
+        // Running Logic
+        if (!isRunning && (up && Input.GetKey(KeyCode.LeftShift)))
+        {
+            isRunning = true; // Set running state
+            move.Run("isRunning", true);
+        }
+        if (isRunning && (!up || !Input.GetKey(KeyCode.LeftShift)))
+        {
+            isRunning = false; // Reset running state
+            move.Run("isRunning", false);
+        }
     }
-    if (isRunning && (!up || !Input.GetKey(KeyCode.LeftShift)))
-    {
-        isRunning = false; // Reset running state
-        move.Run("isRunning", false);
-    }
-    }
-
-    // velocity += Time.deltaTime * acceleration;
-    // animator.SetFloat(VelocityHash, velocity);
-    
-    //void    Hetsika(string action, bool activate)
-    //{
-    //    animator.SetBool(action, activate);
-    //    velocity += Time.deltaTime * acceleration;
-    //    animator.SetFloat(VelocityHash, velocity);
-    //}
 }
