@@ -6,7 +6,6 @@ public class RandomTerrainSpawner : MonoBehaviour
     public GameObject prefab1;
     public GameObject prefab2;
     public GameObject prefab3;
-    public GameObject prefab4;
     public Terrain terrain; // Reference to the terrain
     public int numberOfObjects = 100; // Number of objects to spawn
 
@@ -51,14 +50,6 @@ public class RandomTerrainSpawner : MonoBehaviour
             // Create the object at the random position
             Vector3 spawnPositionsss = new Vector3(xv, yv, zv);
             Instantiate(prefab3, spawnPositionsss, Quaternion.identity);
-
-            float xq = Random.Range(0, terrain.terrainData.size.x);
-            float zq = Random.Range(0, terrain.terrainData.size.z);
-            float yq = terrain.SampleHeight(new Vector3(x, 0, z)); // Sample the height of the terrain
-
-            // Create the object at the random position
-            Vector3 spawnPositionssss = new Vector3(xq, yq, zq);
-            Instantiate(prefab4, spawnPositionssss, Quaternion.identity);
         }
     }
 }

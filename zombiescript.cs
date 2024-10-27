@@ -1,13 +1,15 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class EnemyAI : MonoBehaviour
 {
     public Transform player; // Reference to the player
     public float speed = 2f; // Speed of the enemy
-    public float biteRange = 1.5f; // Range at which the enemy can bite
+    public float biteRange = 0.1f; // Range at which the enemy can bite
 
     public Animator animator;
-
+    private int i = 0;
     void Start()
     {
         animator = GetComponent<Animator>(); // Get the Animator component
